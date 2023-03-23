@@ -5,6 +5,7 @@ services:
     build: .
     volumes:
       - db:/database.json
+    restart: always
 
 volumes:
   db:
