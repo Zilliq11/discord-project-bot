@@ -1,0 +1,17 @@
+# example docker-compose file for python app
+version: '3'
+services:
+  web:
+    build: .
+    command: python main.py
+    volumes:
+      - db:/database.json
+    ports:
+    - "5000:5000"
+    depends_on:
+      - redis
+  redis:
+    image: "redis:alpine"
+
+volumes:
+  db:
