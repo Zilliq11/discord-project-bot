@@ -5,7 +5,7 @@ intents = discord.Intents.default()
 intents.message_content = True
 intents.members = True
 
-bot = commands.Bot(command_prefix=commands.when_mentioned_or('!'), description='poil', intents=intents)
+bot = commands.Bot(command_prefix=commands.when_mentioned_or('!'), description='pnj', intents=intents)
 
 # import config from json file
 import json
@@ -22,7 +22,7 @@ with open("database.json", "r") as f:
 # add project to database
 async def create_project(channel, name, ctx):
     if database.get(channel) is not None:
-         await ctx.send("ERREUR : Une suite quête existe déjà sur ce channel !")
+         await ctx.send("ERREUR : Une suite de quête existe déjà sur ce channel !")
          return
     database[channel] = {"name": name, "active": "", "tasks": []}
     save_database()
