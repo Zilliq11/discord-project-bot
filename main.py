@@ -22,31 +22,31 @@ with open("database.json", "r") as f:
 # add project to database
 async def create_project(channel, name, ctx):
     if database.get(channel) is not None:
-         await ctx.send("ERREUR : Un projet existe déjà sur ce channel !")
+         await ctx.send("ERREUR : Une suite quête existe déjà sur ce channel !")
          return
     database[channel] = {"name": name, "active": "", "tasks": []}
     save_database()
-    await ctx.send("Le projet " + name + " a été créé !")
+    await ctx.send("La suite de quête [" + name + "] a été créé !")
 
 # delete project from database
 async def delete_project(channel, ctx):
     if database.get(channel) is None:
-         await ctx.send("ERREUR : Pas de projet sur ce channel !")
+         await ctx.send("ERREUR : Pas de suite de quête sur ce channel !")
          return
     database[channel].pop()
     save_database()
-    await ctx.send("Le projet a été supprimé !")
+    await ctx.send("La suite de quête a été supprimé !")
 
 # see project tasks
 async def see_project(channel, ctx):
     if database.get(channel) is None:
-         await ctx.send("ERREUR : Pas de projet sur ce channel !")
+         await ctx.send("ERREUR : Pas de suite de quête sur ce channel !")
          return
     
     lines = []
     lines.append("======= " + database[channel]["name"] + " =======")
     if database[channel]["tasks"] == []:
-        lines.append("Aucune tâche en cours...")
+        lines.append("Aucune quête en cours...")
         message = '\n'.join(lines)
         await ctx.send(message)
         return
@@ -100,18 +100,18 @@ def save_database():
 
 @bot.command()
 async def hello(ctx):
-    await ctx.send("Bonjour !")
+    await ctx.send("Grunt Grunt !")
 
 # ========== project commands ==========
 # help command
 @bot.command()
 async def phelp(ctx):
-    await ctx.send("Liste des commandes : \n!cp <nom> : créer un projet \n!dp : supprimer le projet \n!sp : voir les tâches du projet \n!ct <tâche> : créer une tâche \n!dt <numéro> : supprimer une tâche \n!rt <numéro> <responsable> : assigner un responsable à une tâche \n!ft <numéro> : terminer une tâche \n!cat <numéro> : annuler une tâche")
+    await ctx.send("Liste des commandes : \n!cp <nom> : créer une suite de quête \n!dp : supprimer la suite de quête \n!sp : voir les quêtes en cours \n!ct <quête> : créer une quête \n!dt <numéro> : supprimer une quête \n!rt <numéro> <responsable> : Donner la quête à un joueur\n!ft <numéro> : rendre une quête \n!cat <numéro> : annuler une quête")
 
 # create new project
 @bot.command()
 async def cp(ctx, name):
-    await ctx.send("Création du projet " + name + "...")
+    await ctx.send("Création de la suite de quêtes " + name + "...")
     channel = ctx.channel.name
     await create_project(channel, name, ctx)
 
