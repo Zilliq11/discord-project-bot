@@ -1,0 +1,14 @@
+version: "3"
+networks:
+  zill:
+services:
+  bot:
+    container_name: discord-project-bot
+    hostname: discord-project-bot
+    build: .
+    volumes:
+      - /storage/volumes/discord-project-bot/config.prod.json:/app/config.json
+      - /storage/volumes/discord-project-bot/database.json:/app/database.json
+    restart: unless-stopped
+    networks:
+      - zill

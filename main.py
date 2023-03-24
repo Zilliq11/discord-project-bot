@@ -1,4 +1,5 @@
 import discord
+import json
 from discord.ext import commands
 
 intents = discord.Intents.default()
@@ -7,14 +8,15 @@ intents.members = True
 
 bot = commands.Bot(command_prefix=commands.when_mentioned_or('!'), description='pnj', intents=intents)
 
-# import config from json file
-import json
-with open("config.json", "r") as f:
+DB_PATH = "./database.json"
+CONFIG_PATH = "./config.json"
+
+# load config from json file
+with open(CONFIG_PATH, "r") as f:
     config = json.load(f)
 
-# import json database to read and write
-import json
-with open("database.json", "r") as f:
+# load json database to read and write
+with open(DB_PATH, "r") as f:
     database = json.load(f)
 
 #================================
@@ -42,7 +44,7 @@ async def see_project(channel, ctx):
     if database.get(channel) is None:
          await ctx.send("ERREUR : Pas de suite de quête sur ce channel !")
          return
-    
+
     lines = []
     lines.append("======= " + database[channel]["name"] + " =======")
     if database[channel]["tasks"] == []:
@@ -95,7 +97,7 @@ def cancel_task(channel, task):
 
 # save database to json file
 def save_database():
-    with open("database.json", "w") as f:
+    with open(DB_PATH, "w") as f:
         json.dump(database, f)
 
 @bot.command()
