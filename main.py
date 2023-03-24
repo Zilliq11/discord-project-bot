@@ -72,7 +72,7 @@ def create_task(channel, task, creator):
 
 # remove task
 def delete_task(channel, task_number):
-    task = database[channel]["tasks"][3 - 1]
+    task = database[channel]["tasks"][int(task) - 1]
     database[channel]["tasks"].remove(task)
     save_database()
 
