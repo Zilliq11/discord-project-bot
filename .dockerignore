@@ -1,6 +1,8 @@
 config.json
 config.*.json
 database.json
+docker-compose-deploy.yml
 *.md
 *.log
 .git
+.gitignore
