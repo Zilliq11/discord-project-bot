@@ -2,12 +2,6 @@ import discord
 import json
 from discord.ext import commands
 
-intents = discord.Intents.default()
-intents.message_content = True
-intents.members = True
-
-bot = commands.Bot(command_prefix=commands.when_mentioned_or('!'), description='pnj', intents=intents)
-
 DB_PATH = "./database.json"
 CONFIG_PATH = "./config.json"
 
@@ -19,30 +13,42 @@ with open(CONFIG_PATH, "r") as f:
 with open(DB_PATH, "r") as f:
     database = json.load(f)
 
+intents = discord.Intents.default()
+intents.message_content = True
+intents.members = True
+intents.presences = False
+
+bot = commands.Bot(command_prefix=commands.when_mentioned_or('!'), description='pnj', intents=intents)
+
+@bot.event
+async def on_ready():
+    if config["env"] == "prod":
+        await bot.change_presence(status=discord.Status.invisible)
+
 #================================
 
 # add project to database
 async def create_project(channel, name, ctx):
     if database.get(channel) is not None:
-         await ctx.send("ERREUR : Une suite de quête existe déjà sur ce channel !")
+         await ctx.send("ERREUR : Une suite de quêtes existe déjà sur ce channel !")
          return
     database[channel] = {"name": name, "active": "", "tasks": []}
     save_database()
-    await ctx.send("La suite de quête [" + name + "] a été créé !")
+    await ctx.send("La suite de quêtes [" + name + "] a été créé !")
 
 # delete project from database
 async def delete_project(channel, ctx):
     if database.get(channel) is None:
-         await ctx.send("ERREUR : Pas de suite de quête sur ce channel !")
+         await ctx.send("ERREUR : Pas de suite de quêtes sur ce channel !")
          return
     database[channel].pop()
     save_database()
-    await ctx.send("La suite de quête a été supprimé !")
+    await ctx.send("La suite de quêtes a été supprimé !")
 
 # see project tasks
 async def see_project(channel, ctx):
     if database.get(channel) is None:
-         await ctx.send("ERREUR : Pas de suite de quête sur ce channel !")
+         await ctx.send("ERREUR : Pas de suite de quêtes sur ce channel !")
          return
 
     lines = []
@@ -108,7 +114,7 @@ async def hello(ctx):
 # help command
 @bot.command()
 async def phelp(ctx):
-    await ctx.send("Liste des commandes : \n!cp <nom> : créer une suite de quête \n!dp : supprimer la suite de quête \n!sp : voir les quêtes en cours \n!ct <quête> : créer une quête \n!dt <numéro> : supprimer une quête \n!rt <numéro> <responsable> : Donner la quête à un joueur\n!ft <numéro> : rendre une quête \n!cat <numéro> : annuler une quête")
+    await ctx.send("Liste des commandes : \n!cp <nom> : créer une suite de quêtes \n!dp : supprimer la suite de quêtes \n!sp : voir les quêtes en cours \n!ct <quête> : créer une quête \n!dt <numéro> : supprimer une quête \n!rt <numéro> <responsable> : Donner la quête à un joueur\n!ft <numéro> : rendre une quête \n!cat <numéro> : annuler une quête")
 
 # create new project
 @bot.command()

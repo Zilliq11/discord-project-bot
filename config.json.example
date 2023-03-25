@@ -1,4 +1,5 @@
 {
     "invite-url": "https://discord.com/oauth2/authorize?client_id=CLIENT_ID&scope=bot&permissions=1099511638096",
-    "token": "BLBLLBLBLBLBLLLLBLLLLBLL"
+    "token": "BLBLLBLBLBLBLLLLBLLLLBLL",
+    "env": "prod"
 }
