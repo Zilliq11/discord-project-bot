@@ -62,12 +62,7 @@ async def see_project(channel, ctx):
         # get channel used by context
         channel = ctx.channel
 
-        # find user corresponding to responsible in the channnel
-        currentResponsible = None
-        for member in ctx.channel.members:
-            if member.name == task["responsible"]:
-                currentResponsible = member
-        lines.append("[" + str(index + 1) + "] " + task["description"] + " - " + (currentResponsible.mention if currentResponsible is not None else task["responsible"]) + " - " + task["status"])
+        lines.append("[" + str(index + 1) + "] " + task["description"] + " - " + task["responsible"] + " - " + task["status"])
     message = '\n'.join(lines)
     await ctx.send(message)
 
@@ -86,6 +81,10 @@ def delete_task(channel, task_number):
 
 # assign responsable to task
 def assign_responsible(channel, task, responsible, ctx):
+    # get member name from mention
+    if responsible[0] == "<":
+        responsible = ctx.guild.get_member(int(responsible[2:-1])).name
+
     database[channel]["tasks"][int(task) - 1]["responsible"] = responsible
     save_database()
 
